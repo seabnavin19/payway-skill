@@ -1,0 +1,16 @@
+[
+  {
+    "name": "ascii fields",
+    "api_key": "test-api-key",
+    "values": ["20261005120000", "ec000002", "T1001", "10.00"],
+    "expected": "5SziVqWGlEWa5DxP/4FkMrBgz8Y5RVJ4RV1rWn/+GfeCeZ11wni14b+ILj5Ht537pcVcGjdLcLhULORyCOXbnA==",
+    "source": "computed with openssl; replace with PayWay-provided vector"
+  },
+  {
+    "name": "empty field and Khmer text",
+    "api_key": "test-api-key",
+    "values": ["20261005120000", "ec000002", "T1002", "", "5.50", "ហាងកាហ្វេ"],
+    "expected": "x5kzIZfGlP/Q+5QoAgtQ+P7eRYliadRWl8DGZiz/4Ics9MdwpHzGDXLGkRkyCHUNbuJQFE0nhqj7/QgY+g5+ng==",
+    "source": "computed with node + python; replace with PayWay-provided vector"
+  }
+]
