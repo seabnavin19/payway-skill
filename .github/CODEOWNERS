@@ -1,0 +1,8 @@
+# Default: any docs team member can approve
+*                             @seabnavin19
+
+# API facts and security rules need the API team
+/docs/apis/                   @seabnavin19
+/docs/guides/security.md      @seabnavin19
+/test-vectors/                @seabnavin19
+/skills/                      @seabnavin19
