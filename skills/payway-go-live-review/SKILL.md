@@ -5,7 +5,7 @@ description: "Use when preparing a PayWay integration for production, or when as
 
 # PayWay Go-Live Review
 
-Follow the knowledge-base and hard rules in the `using-payway` skill.
+Follow the knowledge-base rules, hard rules and Draft content section in the `using-payway` skill.
 
 ## Stage 5 — Go-live
 

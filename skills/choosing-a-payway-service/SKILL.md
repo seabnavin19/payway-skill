@@ -5,7 +5,7 @@ description: "Use when a developer wants to accept payments with PayWay but has 
 
 # Choosing a PayWay Service
 
-Follow the knowledge-base and hard rules in the `using-payway` skill.
+Follow the knowledge-base rules, hard rules and Draft content section in the `using-payway` skill.
 
 ## Stage 1 — Discover
 

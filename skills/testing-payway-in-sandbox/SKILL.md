@@ -5,7 +5,7 @@ description: "Use when a PayWay integration has been written and needs to be ver
 
 # Testing PayWay in Sandbox
 
-Follow the knowledge-base and hard rules in the `using-payway` skill.
+Follow the knowledge-base rules, hard rules and Draft content section in the `using-payway` skill.
 
 ## Stage 4 — Test
 

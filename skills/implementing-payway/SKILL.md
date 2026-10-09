@@ -5,7 +5,7 @@ description: "Use when writing or changing code that calls ABA PayWay APIs for a
 
 # Implementing PayWay
 
-Follow the knowledge-base and hard rules in the `using-payway` skill.
+Follow the knowledge-base rules, hard rules and Draft content section in the `using-payway` skill.
 
 ## Stage 3 — Implement
 

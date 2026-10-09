@@ -5,7 +5,7 @@ description: "Use when a PayWay call fails — hash mismatch, a PayWay error cod
 
 # Debugging PayWay
 
-Follow the knowledge-base and hard rules in the `using-payway` skill.
+Follow the knowledge-base rules, hard rules and Draft content section in the `using-payway` skill.
 
 1. Fetch `llms.txt` and find the API pages for the failing call.
 2. Read their "Errors" and "Pitfalls" sections.
