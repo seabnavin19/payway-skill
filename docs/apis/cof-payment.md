@@ -8,7 +8,7 @@ source: https://developer.payway.com.kh/payment-19336821e0
 status: draft
 verified_by:
 verified_on:
-related: [security, tokenization, cof-link-account, cof-link-card, checkout-check-transaction]
+related: [security, tokenization, recurring, cof-link-account, cof-link-card, cof-subscription, checkout-check-transaction]
 ---
 
 # Payment

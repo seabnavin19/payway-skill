@@ -25,8 +25,7 @@ time, not on a fixed schedule.
 
 ## When not to use
 
-- Fixed amount on a fixed schedule (subscriptions, memberships, tuition installments) → use Recurring
-  (PayWay: [Schedule Payment](https://developer.payway.com.kh/schedule-payment-2038907m0)) instead.
+- Fixed amount on a fixed schedule (subscriptions, memberships, tuition installments) → use [Recurring](recurring.md) instead.
 - A one-time payment with no saved method → use [Online checkout](../accept-payments/online-checkout.md) instead.
 
 ## Flow

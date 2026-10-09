@@ -8,7 +8,7 @@ source: https://developer.payway.com.kh/get-token-details-19336824e0
 status: draft
 verified_by:
 verified_on:
-related: [security, tokenization, cof-link-account, cof-link-card]
+related: [security, tokenization, recurring, cof-link-account, cof-link-card]
 ---
 
 # Get token details
