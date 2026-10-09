@@ -4,11 +4,16 @@ type: guide
 title: PayWay Integration Knowledge Base
 summary: Start here — how this knowledge base is organized and how AI agents use it.
 status: draft
+related: [choose-a-service, security, go-live-checklist]
 ---
 
 # PayWay Integration Knowledge Base
 
 Everything a developer — or their AI coding agent — needs to integrate ABA PayWay.
+
+- **Not sure which service you need?** Start with [Choose a service](guides/choose-a-service.md).
+- **Writing code?** Read [Security](guides/security.md) first, then your service page.
+- **Shipping?** Run the [Go-live checklist](guides/go-live-checklist.md).
 
 ## Sections
 
