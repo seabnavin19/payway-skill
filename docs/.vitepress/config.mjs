@@ -5,7 +5,7 @@ import { writeAgentFiles } from '../../scripts/lib/agent-files.mjs'
 
 // `||` not `??`: CI passes an empty string when the repo variable is unset
 const BASE_URL = process.env.DOCS_BASE_URL || 'https://payway-ai.payway.com.kh'
-const REPO = process.env.GITHUB_REPOSITORY ?? 'payway/payway-ai'
+const REPO = process.env.GITHUB_REPOSITORY ?? 'seabnavin19/payway-skill'
 const SECTIONS = [
   ['guide', 'Guides'],
   ['service', 'Services'],
