@@ -15,7 +15,7 @@ related: [online-checkout, security]
 
 ## Prerequisites
 
-- A server running the [Node.js](../node/online-checkout.md) or [Python](../python/online-checkout.md) example, which holds `PAYWAY_MERCHANT_ID` and `PAYWAY_API_KEY`. The browser never sees them.
+- A server running the [Node.js](../node/online-checkout.md) or [Python](../python/online-checkout.md) example, which holds your PayWay merchant ID and key in environment variables. The browser never sees them.
 - The page served from a domain whitelisted by PayWay.
 
 ## Code

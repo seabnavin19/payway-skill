@@ -24,6 +24,7 @@ PayWay calls this **Ecommerce Checkout**.
 ## When not to use
 
 - The customer pays in person at a counter or kiosk → use [Dynamic QR](dynamic-qr.md) instead.
+- You have no website and send the customer a link by chat, SMS or email → use [Payment link](payment-link.md) instead.
 - Selling on Shopify or WooCommerce → use a [PayWay plugin](https://developer.payway.com.kh/plugins-3186291f0) instead.
 
 ## Flow

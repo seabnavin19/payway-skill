@@ -15,7 +15,7 @@ related: [dynamic-qr, security]
 
 ## Prerequisites
 
-- A server running the [Node.js](../node/dynamic-qr.md) or [Python](../python/dynamic-qr.md) example, which holds `PAYWAY_MERCHANT_ID` and `PAYWAY_API_KEY`. The browser never sees them.
+- A server running the [Node.js](../node/dynamic-qr.md) or [Python](../python/dynamic-qr.md) example, which holds your PayWay merchant ID and key in environment variables. The browser never sees them.
 
 ## Code
 

@@ -24,6 +24,7 @@ PayWay calls this **ABA QR API**.
 ## When not to use
 
 - The customer pays on your website or in your app → use [Online checkout](online-checkout.md) instead.
+- The customer is remote and you send a link by chat, SMS or email → use [Payment link](payment-link.md) instead.
 
 ## Flow
 
