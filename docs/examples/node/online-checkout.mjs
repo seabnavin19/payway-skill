@@ -12,6 +12,8 @@ const PUBLIC_URL = process.env.PUBLIC_URL ?? 'https://your-shop.example'
 
 const reqTime = () => new Date().toISOString().replace(/\D/g, '').slice(0, 14) // UTC YYYYMMDDHHmmss
 const b64 = s => Buffer.from(s, 'utf8').toString('base64')
+// return_params comes back in the callback as the string we sent, e.g. '{"order_id":"1001"}'.
+const orderIdFrom = rp => { try { return String(JSON.parse(rp).order_id) } catch { return undefined } }
 
 // Replace with your database. Prices live on the server, never in the browser.
 const orders = new Map([['1001', { id: '1001', currency: 'USD', lines: [{ price: 2.5, qty: 2 }, { price: 1, qty: 1 }] }]])
@@ -36,6 +38,7 @@ export function purchaseFields(order) {
     amount: orderAmount(order),
     currency: order.currency,
     return_url: b64(`${PUBLIC_URL}/payway/callback`),
+    return_params: JSON.stringify({ order_id: order.id }), // echoed in the callback
   }
   f.hash = paywayHash(HASH_FIELDS.map(k => f[k]), API_KEY)
   return f
@@ -63,7 +66,9 @@ app.post('/checkout', (req, res) => {
 
 app.post('/payway/callback', async (req, res) => {
   // Don't trust the callback body: re-check the status with PayWay and compare the amount.
-  const order = orders.get(String(req.body.tran_id))
+  // The portal describes the callback tran_id as gateway-generated, so find the order from the
+  // return_params we sent (documented as included in the callback), then check our own tran_id.
+  const order = orders.get(orderIdFrom(req.body.return_params))
   if (!order) return res.sendStatus(404)
   const d = (await checkTransaction(order.id)).data ?? {}
   const paid = d.payment_status === 'APPROVED' && Number(d.original_amount) === Number(orderAmount(order))

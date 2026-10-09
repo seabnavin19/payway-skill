@@ -93,7 +93,8 @@ async def check_transaction(tran_id):
     return r.json()
 
 
-# ponytail: in-memory; use a unique DB column on tran_id in production.
+# ponytail: in-memory, single process. With a DB: insert tran_id into a unique column first
+# (that insert is the reservation), delete it if PayWay does not confirm.
 USED_TRAN_IDS = set()
 
 app = FastAPI()
@@ -117,19 +118,28 @@ async def callback(request: Request):
     # Callback has tran_id (PayWay's), status and merchant_ref_no (our order ID) - all unauthenticated.
     # Check transaction does not return the link id or merchant_ref_no, so bind the payment to THIS
     # order by asking PayWay about the order's own link (payment_limit 1 => PAID after one payment),
-    # and let each tran_id mark at most one order paid.
+    # Each tran_id marks at most one order paid, and each order accepts at most one tran_id.
     body = await request.json()
     order = ORDERS.get(str(body.get("merchant_ref_no")))
     tran_id = str(body.get("tran_id"))
-    if not order or not order.get("link_id") or tran_id in USED_TRAN_IDS:
-        raise HTTPException(404)
-    link = (await get_payment_link_details(order["link_id"])).get("data") or {}
-    d = (await check_transaction(tran_id)).get("data") or {}
-    amount = Decimal(order_amount(order))
-    paid = (link.get("status") == "PAID" and Decimal(str(link.get("amount"))) == amount
-            and d.get("payment_status") == "APPROVED" and Decimal(str(d.get("original_amount"))) == amount)
-    if paid:
-        USED_TRAN_IDS.add(tran_id)
+    if (not order or not order.get("link_id") or order.get("paid_tran_id") or order.get("checking")
+            or tran_id in USED_TRAN_IDS):
+        raise HTTPException(409)
+    order["checking"] = True  # reserve order and tran_id before awaiting PayWay, so concurrent callbacks can't both pass
+    USED_TRAN_IDS.add(tran_id)
+    paid, d = False, {}
+    try:
+        link = (await get_payment_link_details(order["link_id"])).get("data") or {}
+        d = (await check_transaction(tran_id)).get("data") or {}
+        amount = Decimal(order_amount(order))
+        paid = (link.get("status") == "PAID" and Decimal(str(link.get("amount"))) == amount
+                and d.get("payment_status") == "APPROVED" and Decimal(str(d.get("original_amount"))) == amount)
+    finally:
+        if paid:
+            order["paid_tran_id"] = tran_id  # paid flag and tran_id set together
+        else:
+            USED_TRAN_IDS.discard(tran_id)  # release on non-confirmation
+        order["checking"] = False
     # TODO: mark the order paid in your database when `paid` is true (make this idempotent).
     print("order", order["id"], "PAID" if paid else f"not paid: {d.get('payment_status')}")
     return {}

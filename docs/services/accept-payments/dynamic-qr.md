@@ -70,4 +70,5 @@ sequenceDiagram
 - Your screens must follow the PayWay QR payment display guidelines (option selection, QR area, success screen) linked from the [portal guide](https://developer.payway.com.kh/aba-qr-api-3158158f0).
 - `qrImage` templates can be up to 0.5 MB; on slow networks render `qrString` yourself inside the KHQR frame.
 - Use a short `lifetime` (minimum 3 minutes) for counter payments so stale QRs cannot be paid.
+- Send your order ID in `return_params` and use it to find the order when the callback arrives; the portal describes the callback `tran_id` as gateway-generated.
 - Always confirm with Check transaction; the callback alone is not enough. See also [Security](../../guides/security.md).

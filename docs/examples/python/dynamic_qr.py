@@ -3,6 +3,7 @@
 # POST /payway/callback   -> PayWay's callback_url notification; confirms with Check transaction
 # Env: PAYWAY_MERCHANT_ID, PAYWAY_API_KEY, PAYWAY_BASE_URL (default sandbox), PUBLIC_URL
 import base64
+import json
 import os
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -34,6 +35,14 @@ def b64(s):
     return base64.b64encode(s.encode("utf-8")).decode("ascii")
 
 
+def order_id_from(return_params):
+    """return_params comes back in the callback as the string we sent, e.g. '{"order_id":"1001"}'."""
+    try:
+        return str(json.loads(return_params)["order_id"])
+    except (TypeError, ValueError, KeyError):
+        return None
+
+
 def order_amount(order):
     """Amount is computed from the server-side order, never from client input."""
     total = sum(line["price"] * line["qty"] for line in order["lines"])
@@ -51,6 +60,7 @@ async def generate_qr(order):
         "currency": order["currency"],
         "payment_option": "abapay_khqr",
         "callback_url": b64(f"{PUBLIC_URL}/payway/callback"),
+        "return_params": json.dumps({"order_id": order["id"]}),  # echoed in the callback
         "lifetime": 10,  # minutes, min 3
         "qr_image_template": "template3_color",
     }
@@ -86,7 +96,9 @@ async def qr(request: Request):
 @app.post("/payway/callback")
 async def callback(request: Request):
     # Don't trust the callback body: re-check the status with PayWay and compare the amount.
-    order = ORDERS.get(str((await request.json()).get("tran_id")))
+    # The portal describes the callback tran_id as gateway-generated, so find the order from the
+    # return_params we sent (documented as included in the callback), then check our own tran_id.
+    order = ORDERS.get(order_id_from((await request.json()).get("return_params")))
     if not order:
         raise HTTPException(404)
     d = (await check_transaction(order["id"])).get("data") or {}

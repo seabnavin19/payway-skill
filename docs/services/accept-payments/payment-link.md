@@ -69,6 +69,8 @@ sequenceDiagram
 
 - Set `merchant_ref_no` to your own order ID; PayWay returns it in the callback but does not check duplicates, so keep it unique yourself.
 - The callback is unauthenticated, and Check transaction does not return the link `id` or `merchant_ref_no`. Before marking an order paid, store the link `id` with the order, confirm that link is `PAID` via Get payment link details, confirm the `tran_id` with Check transaction, and accept each `tran_id` only once.
+- Let each order accept at most one `tran_id`: ignore callbacks for an order that is already paid, and store the paid flag and the `tran_id` together. Otherwise another order's approved `tran_id` can be credited to an already-paid order and then rejected for its real order.
+- Reserve the `tran_id` and the order *before* calling PayWay (with a database: insert into a unique `tran_id` column first) and release them if PayWay does not confirm, so two concurrent callbacks cannot both pass.
 - Set `payment_limit` to `1` for a single-order link so it becomes `PAID` after one payment.
 - Set an `expired_date` so old links cannot be paid after prices change.
 - Compute the amount on your server and confirm with Check transaction before shipping. See also [Security](../../guides/security.md).

@@ -73,4 +73,5 @@ sequenceDiagram
 - Compute and sign the amount on the server. See [Never trust client amounts](../../best-practices/never-trust-client-amounts.md).
 - Secure your `return_url`. PayWay signs callbacks with an HMAC-SHA512 header (`X-PayWay-HMAC-SHA512`) over the body values sorted by key; the portal's sample calls the key `YOUR_SECRET_KEY`.
   > Which key signs callbacks is not documented on the portal — confirm with PayWay team.
+- Send your order ID in `return_params` and use it to find the order when the callback arrives; the portal describes the callback `tran_id` as gateway-generated.
 - Confirm every payment with Check transaction before fulfilling. See also [Security](../../guides/security.md).

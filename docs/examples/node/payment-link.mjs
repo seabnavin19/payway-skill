@@ -79,7 +79,8 @@ export async function checkTransaction(tranId) {
   return res.json()
 }
 
-// ponytail: in-memory; use a unique DB column on tran_id in production.
+// ponytail: in-memory, single process. With a DB: insert tran_id into a unique column first
+// (that insert is the reservation), delete it if PayWay does not confirm.
 const usedTranIds = new Set()
 
 const app = express()
@@ -98,15 +99,24 @@ app.post('/payway/callback', async (req, res) => {
   // Callback has tran_id (PayWay's), status and merchant_ref_no (our order ID) - all unauthenticated.
   // Check transaction does not return the link id or merchant_ref_no, so bind the payment to THIS
   // order by asking PayWay about the order's own link (payment_limit 1 => PAID after one payment),
-  // and let each tran_id mark at most one order paid.
+  // Each tran_id marks at most one order paid, and each order accepts at most one tran_id.
   const order = orders.get(String(req.body.merchant_ref_no))
   const tranId = String(req.body.tran_id)
-  if (!order?.linkId || usedTranIds.has(tranId)) return res.sendStatus(404)
-  const link = (await getPaymentLinkDetails(order.linkId)).data ?? {}
-  const d = (await checkTransaction(tranId)).data ?? {}
-  const paid = link.status === 'PAID' && Number(link.amount) === Number(orderAmount(order)) &&
-    d.payment_status === 'APPROVED' && Number(d.original_amount) === Number(orderAmount(order))
-  if (paid) usedTranIds.add(tranId)
+  if (!order?.linkId || order.paidTranId || order.checking || usedTranIds.has(tranId)) return res.sendStatus(409)
+  order.checking = true // reserve order and tran_id before awaiting PayWay, so concurrent callbacks can't both pass
+  usedTranIds.add(tranId)
+  let paid = false
+  let d = {}
+  try {
+    const link = (await getPaymentLinkDetails(order.linkId)).data ?? {}
+    d = (await checkTransaction(tranId)).data ?? {}
+    paid = link.status === 'PAID' && Number(link.amount) === Number(orderAmount(order)) &&
+      d.payment_status === 'APPROVED' && Number(d.original_amount) === Number(orderAmount(order))
+  } finally {
+    if (paid) order.paidTranId = tranId // paid flag and tran_id set together
+    else usedTranIds.delete(tranId) // release on non-confirmation
+    order.checking = false
+  }
   // TODO: mark the order paid in your database when `paid` is true (make this idempotent).
   console.log('order', order.id, paid ? 'PAID' : `not paid: ${d.payment_status}`)
   res.sendStatus(200)
