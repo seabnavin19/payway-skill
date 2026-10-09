@@ -8,14 +8,15 @@ source: https://developer.payway.com.kh/check-transaction-14530826e0
 status: draft
 verified_by:
 verified_on:
-related: [security, online-checkout]
+related: [security, online-checkout, dynamic-qr]
 ---
 
 # Check transaction
 
 Call this from your server after creating a payment (and when your callback URL is hit) to
 confirm whether the payment succeeded before you fulfil the order. Used by
-[Online checkout](../services/accept-payments/online-checkout.md).
+[Online checkout](../services/accept-payments/online-checkout.md) and
+[Dynamic QR](../services/accept-payments/dynamic-qr.md).
 Only transactions created within 7 days can be checked; for older ones the portal points to
 [Get a transaction details](https://developer.payway.com.kh/get-a-transaction-details-14530824e0).
 
