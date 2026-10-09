@@ -58,7 +58,7 @@ Fields inside `merchant_auth`:
 | `complete_amount` | decimal | Yes | Amount to complete. |
 | `payout` | string | Yes | Payout instruction. The PHP sample passes a list of `{"acc": <ABA account or MID>, "amt": <amount>}` objects. |
 
-> `payout` is typed `string` but the PHP sample sends a JSON array (not Base64, unlike `payout` in Purchase). Not documented on the portal — confirm with PayWay team. Payout accounts generally have to be whitelisted first ([Add a beneficiary to whitelist](https://developer.payway.com.kh/add-a-beneficiary-to-whitelist-14530818e0)).
+> `payout` is typed `string` but the PHP sample sends a JSON array (not Base64, unlike `payout` in Purchase). Not documented on the portal — confirm with PayWay team. Payout accounts generally have to be whitelisted first ([Add a beneficiary to whitelist](payout-add-beneficiary.md)).
 
 ## Response
 
