@@ -160,8 +160,10 @@ app.post('/sellers/:id/whitelist', async (req, res) => {
   if (!seller) return res.status(404).json({ error: 'seller not found' })
   if (seller.whitelisted) return res.json({ whitelisted: true })
   const r = await addBeneficiary(seller.account)
-  // The portal lists no success code for this API; accept only an Active (status 1) beneficiary.
-  if (r.data?.status === 1) seller.whitelisted = true
+  // The portal lists no success code for this API; accept only an Active (status 1) beneficiary,
+  // or PTL148 (Payee already exist). An existing payee may be inactive; PayWay then rejects the
+  // payment (Purchase code 42) — see Update a beneficiary status.
+  if (r.data?.status === 1 || r.status?.code === 'PTL148') seller.whitelisted = true
   res.status(seller.whitelisted ? 200 : 502).json({ whitelisted: seller.whitelisted, status: r.status })
 })
 

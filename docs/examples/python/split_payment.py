@@ -202,8 +202,10 @@ async def whitelist(seller_id: str):
     if seller["whitelisted"]:
         return {"whitelisted": True}
     r = await add_beneficiary(seller["account"])
-    # The portal lists no success code for this API; accept only an Active (status 1) beneficiary.
-    if (r.get("data") or {}).get("status") == 1:
+    # The portal lists no success code for this API; accept only an Active (status 1) beneficiary,
+    # or PTL148 (Payee already exist). An existing payee may be inactive; PayWay then rejects the
+    # payment (Purchase code 42) — see Update a beneficiary status.
+    if (r.get("data") or {}).get("status") == 1 or (r.get("status") or {}).get("code") == "PTL148":
         seller["whitelisted"] = True
     return JSONResponse({"whitelisted": seller["whitelisted"], "status": r.get("status")},
                         status_code=200 if seller["whitelisted"] else 502)

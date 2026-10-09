@@ -98,11 +98,11 @@ Request example from the portal:
 | `PTL134` | Account not found | Check the account number. |
 | `PTL146` | Payee is invalid | Check the MID or account. |
 | `PTL147` | Currency of the payee does not the same as merchant currency | Use a beneficiary account in your merchant currency. |
-| `PTL148` | Payee already exist | Already whitelisted; nothing to do (use Update a beneficiary status to re-enable). |
+| `PTL148` | Payee already exist | Already on your whitelist, but it may be inactive; see [Update a beneficiary status](payout-update-beneficiary-status.md). |
 | `PTL150` | Business profile is not found | Contact PayWay. |
 | `PTL151` | Failed to whitelist account | Retry later or contact PayWay. |
 
-> The portal lists no success code for this endpoint (the sibling Update a beneficiary status lists `00`). Not documented on the portal — confirm with PayWay team. The examples treat the call as successful only when the response contains `data` with `status` `1` (Active).
+> The portal lists no success code for this endpoint (the sibling Update a beneficiary status lists `00`). Not documented on the portal — confirm with PayWay team. The examples treat the call as successful only when the response contains `data` with `status` `1` (Active), or the code is `PTL148` (already listed). An already-listed payee may be inactive, in which case Purchase rejects the payout (code `42`: Payout info contain account invalid status).
 
 ## Pitfalls
 
