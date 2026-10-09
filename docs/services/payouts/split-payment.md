@@ -34,7 +34,7 @@ merchant** (you need their MID).
 
 ## When not to use
 
-- You pay people from your settlement balance on demand, not tied to one customer payment → use Beneficiary payout instead.
+- You pay people from your settlement balance on demand, not tied to one customer payment → use [Beneficiary payout](beneficiary-payout.md) instead.
 - All the money stays with you → use [Online checkout](../accept-payments/online-checkout.md) instead.
 - The beneficiaries are not ABA account holders or ABA merchants: the portal supports only those two.
 

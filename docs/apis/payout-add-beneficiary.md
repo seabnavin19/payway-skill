@@ -8,13 +8,13 @@ source: https://developer.payway.com.kh/add-a-beneficiary-to-whitelist-14530818e
 status: draft
 verified_by:
 verified_on:
-related: [security, split-payment, payout-update-beneficiary-status]
+related: [security, split-payment, beneficiary-payout, payout-payout, payout-update-beneficiary-status]
 ---
 
 # Add a beneficiary to whitelist
 
 Call this once per beneficiary, before you name them in any `payout` instruction (Split & Payout) or
-in a Payout request. The portal's Payout guide says a beneficiary is
+in a [Payout](payout-payout.md) request. The portal's Payout guide says a beneficiary is
 automatically **enabled** once added. A beneficiary must be an **ABA account holder** (you need
 their ABA account) or an **ABA merchant** (you need their MID). To disable one later, use
 [Update a beneficiary status](payout-update-beneficiary-status.md).
@@ -106,7 +106,7 @@ Request example from the portal:
 
 ## Pitfalls
 
-- The hash is only `request_time` + `merchant_auth`, and it is Base64 of the raw HMAC — unlike Payout, whose PHP sample produces a hex digest.
+- The hash is only `request_time` + `merchant_auth`, and it is Base64 of the raw HMAC — unlike [Payout](payout-payout.md), whose PHP sample produces a hex digest.
 - `payee` goes inside the encrypted `merchant_auth`, not as a top-level field.
 - Whitelisting decides who can receive your money. Call it only from a staff-authorized back office, with the account taken from your own beneficiary records — never from a customer-facing request.
 - The beneficiary's currency must match your merchant currency (`PTL147`).

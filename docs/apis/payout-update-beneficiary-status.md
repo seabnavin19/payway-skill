@@ -8,7 +8,7 @@ source: https://developer.payway.com.kh/update-a-beneficiary-status-14530817e0
 status: draft
 verified_by:
 verified_on:
-related: [security, split-payment, payout-add-beneficiary]
+related: [security, split-payment, beneficiary-payout, payout-add-beneficiary]
 ---
 
 # Update a beneficiary status
