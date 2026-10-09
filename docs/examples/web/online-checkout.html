@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Checkout</title>
+  <!-- PayWay plugin JS (same URL for sandbox and production). Remove it to use the hosted view. -->
+  <script src="https://checkout.payway.com.kh/plugins/checkout2-0.js" defer></script>
+</head>
+<body>
+  <!-- The browser sends only the order ID. Your server computes the amount and signs the fields. -->
+  <button id="pay" data-order-id="1001">Pay</button>
+  <p id="error" role="alert"></p>
+
+  <script>
+    document.getElementById('pay').addEventListener('click', async (event) => {
+      try {
+        const res = await fetch('/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: event.target.dataset.orderId }),
+        })
+        if (!res.ok) throw new Error('Could not start checkout')
+        const { action, fields } = await res.json()
+
+        // Form id and target as in the portal's Ecommerce Checkout sample.
+        document.getElementById('aba_merchant_request')?.remove()
+        const form = document.createElement('form')
+        Object.assign(form, { method: 'POST', action, target: 'aba_webservice', id: 'aba_merchant_request' })
+        for (const [name, value] of Object.entries(fields)) {
+          const input = document.createElement('input')
+          Object.assign(input, { type: 'hidden', name, value })
+          form.appendChild(input)
+        }
+        document.body.appendChild(form)
+        AbaPayway.checkout() // popup on desktop, bottom sheet on mobile
+      } catch (err) {
+        document.getElementById('error').textContent = err.message
+      }
+    })
+  </script>
+</body>
+</html>
