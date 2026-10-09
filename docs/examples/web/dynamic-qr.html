@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Scan to pay</title>
+</head>
+<body>
+  <!-- The screen sends only the order ID. Your server computes the amount, signs and calls PayWay. -->
+  <button id="show-qr" data-order-id="2001">Show payment QR</button>
+  <p id="amount"></p>
+  <img id="qr" alt="Payment QR code" hidden />
+  <p id="error" role="alert"></p>
+
+  <script>
+    document.getElementById('show-qr').addEventListener('click', async (event) => {
+      const error = document.getElementById('error')
+      error.textContent = ''
+      try {
+        const res = await fetch('/qr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: event.target.dataset.orderId }),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || data.detail || 'Could not create QR')
+        const img = document.getElementById('qr')
+        img.src = data.qrImage // data:image/png;base64,...
+        img.hidden = false
+        document.getElementById('amount').textContent = `${data.amount} ${data.currency}`
+      } catch (err) {
+        error.textContent = err.message
+      }
+    })
+  </script>
+</body>
+</html>

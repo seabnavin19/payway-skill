@@ -1,0 +1,10 @@
+{
+  "name": "payway",
+  "description": "ABA PayWay integration skills for coding agents: choose the right service, implement it safely, test in sandbox, go live.",
+  "version": "0.1.0",
+  "author": { "name": "SEAB Navin", "email": "seabgreatnavin@gmail.com" },
+  "homepage": "https://github.com/seabnavin19/payway-skill",
+  "repository": "https://github.com/seabnavin19/payway-skill",
+  "license": "MIT",
+  "keywords": ["payway", "aba", "payments", "cambodia", "khqr"]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "payway-ai",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node scripts/gen-drafts.mjs && vitepress dev docs",
+    "check": "node scripts/gen-drafts.mjs && node scripts/check.mjs",
+    "build": "node scripts/gen-drafts.mjs && vitepress build docs",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "vitepress": "^1.6.3"
+  }
+}
