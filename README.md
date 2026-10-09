@@ -1,6 +1,6 @@
 # PayWay Skill
 
-Official-style ABA PayWay integration skills for AI coding agents, plus the knowledge base they read.
+ABA PayWay integration skills for AI coding agents, plus the knowledge base they read.
 Install the skills and your agent takes a developer from "I have a business" to "PayWay live in
 production" — choosing the right PayWay service, implementing it safely, testing it in sandbox and
 reviewing it for go-live.
